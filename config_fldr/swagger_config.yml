@@ -1,0 +1,312 @@
+swagger: '2.0'
+info:
+  title: Racing Monaco API
+  description: This API provides racing report data, driver information, and driver details.
+  version: '1.0.0'
+
+paths:
+  /api/v1/report:
+    get:
+      summary: Get the racing results report.
+      description: Show the racing results, sorted by racing-time.
+      parameters:
+        - name: order
+          in: query
+          description: Sort the results by time in either descending or ascending order.
+          required: false
+          type: string
+          enum:
+            - desc
+            - asc
+          default: desc
+        - name: format
+          in: query
+          description: The response format (json or xml).
+          required: false
+          type: string
+          enum:
+            - json
+            - xml
+          default: json
+
+      responses:
+        200:
+          description: A successful response containing the racing results.
+          schema:
+            type: object
+            properties:
+
+              drivers_with_position:
+                type: object
+                properties:
+                  abbr:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      abbr:
+                        type: string
+                      team:
+                        type: string
+                      start_time:
+                        type: string
+                        format: date-time
+                      end_time:
+                        type: string
+                        format: date-time
+                      position:
+                        type: integer
+                      time:
+                        type: string
+                      error:
+                        type: string
+                        nullable: true
+
+              drivers_without_position:
+                type: object
+                properties:
+                  abbr:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      abbr:
+                        type: string
+                      team:
+                        type: string
+                      start_time:
+                        type: string
+                        format: date-time
+                      end_time:
+                        type: string
+                        format: date-time
+                      position:
+                        type: integer
+                        nullable: true
+                      time:
+                        type: string
+                      error:
+                        type: string
+                        nullable: true
+
+              errors:
+                type: object
+                additionalProperties:
+                  type: string
+
+          example:
+            drivers_with_position:
+              'KMH':
+                - name : "Kevin Magnussen"
+                - abbr : "KMH"
+                - team : "HAAS FERRARI"
+                - start_time : "2018-05-24 12:02:51.003000"
+                - end_time : "2018-05-24 12:04:04.396000"
+                - position : 14
+                - time : "0:01:13.393000"
+                - error : null
+
+            drivers_without_position:
+              'EOF':
+                - "name": "Esteban Ocon"
+                - "abbr": "EOF"
+                - "team": "FORCE INDIAMERCEDES"
+                - "start_time": "2018-05-24 12:00:00.000000"
+                - "end_time": "2018-05-24 13:31:00.000000"
+                - "position": null
+                - "time": "01:31:00"
+                - "error": null
+
+            'errors':
+              - "LHM_Lewis_Hamilton_MERCEDES": "LHM Lewis Hamilton_MERCEDES not included in results -- wrong data format in line 3 of resource file."
+              - "BRT": "Brendon Hartley (BRT) hasn`t enough data. Not included in results"
+
+        400:
+          description: Invalid parameter or query string.
+          schema:
+            type: object
+            properties:
+              errors:
+                type: string
+
+            example:
+              errors: "Wrong parameter 'order' -> 'wrong'. Choose from between 'desc' and 'asc'."
+
+
+  /api/v1/drivers:
+    get:
+      summary: Get the list of drivers.
+      description: Show drivers with correct and incorrect data.
+      parameters:
+        - name: format
+          in: query
+          description: The response format (json or xml).
+          required: false
+          type: string
+          enum:
+            - json
+            - xml
+          default: json
+
+      responses:
+        200:
+          description: A successful response containing the list of drivers.
+          schema:
+            type: object
+            properties:
+              drivers:
+                type: object
+                properties:
+                  abbr:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      abbr:
+                        type: string
+                      team:
+                        type: string
+                      start_time:
+                        type: string
+                        format: date-time
+                      end_time:
+                        type: string
+                        format: date-time
+                      position:
+                        type: integer
+                      time:
+                        type: string
+                      error:
+                        type: string
+                        nullable: true
+
+              drivers_incor_data:
+                type: object
+                properties:
+                  abbr:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      abbr:
+                        type: string
+                      team:
+                        type: string
+                      start_time:
+                        type: string
+                        format: date-time
+                      end_time:
+                        type: string
+                        format: date-time
+                      position:
+                        type: integer
+                      time:
+                        type: string
+                      error:
+                        type: string
+
+              errors:
+                type: object
+                additionalProperties:
+                  type: string
+
+            example:
+              drivers_with_position:
+                'KMH':
+                  - name: "Kevin Magnussen"
+                  - abbr: "KMH"
+                  - team: "HAAS FERRARI"
+                  - start_time: "2018-05-24 12:02:51.003000"
+                  - end_time: "2018-05-24 12:04:04.396000"
+                  - position: 14
+                  - time: "0:01:13.393000"
+                  - error: null
+
+              drivers_without_position:
+                'EOF':
+                  - "name": "Esteban Ocon"
+                  - "abbr": "EOF"
+                  - "team": "FORCE INDIAMERCEDES"
+                  - "start_time": "2018-05-24 12:14:12.054000"
+                  - "end_time": "2018-05-24 12:11:24.067000"
+                  - "position": null
+                  - "time": "-1 day, 23:57:12.013000"
+                  - "error": "incorrect data"
+
+              'errors':
+                - "LHM_Lewis_Hamilton_MERCEDES": "LHM Lewis Hamilton_MERCEDES not included in results -- wrong data format in line 3 of resource file."
+                - "BRT": "Brendon Hartley (BRT) hasn`t enough data. Not included in results"
+
+
+  /api/v1/drivers/{driver_id}:
+    get:
+      summary: Get info about driver.
+      description: Show detail info about driver.
+      parameters:
+        - name: driver_id
+          description: Abbreviation of driver.
+          required: false
+          in: path
+        - name: format
+          in: query
+          description: The response format (json or xml).
+          required: true
+          type: string
+          enum:
+            - json
+            - xml
+          default: json
+
+      responses:
+        200:
+          description: A successful response containing the info about driver.
+          schema:
+            type: object
+            properties:
+              drivers:
+                type: object
+                properties:
+                  abbr:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      abbr:
+                        type: string
+                      team:
+                        type: string
+                      start_time:
+                        type: string
+                        format: date-time
+                      end_time:
+                        type: string
+                        format: date-time
+                      position:
+                        type: integer
+                      time:
+                        type: string
+                      error:
+                        type: string
+                        nullable: true
+
+            example:
+              drivers:
+                'KMH':
+                  - name: "Kevin Magnussen"
+                  - abbr: "KMH"
+                  - team: "HAAS FERRARI"
+                  - start_time: "2018-05-24 12:02:51.003000"
+                  - end_time: "2018-05-24 12:04:04.396000"
+                  - position: 14
+                  - time: "0:01:13.393000"
+                  - error: null
+
+        400:
+          description: Invalid parameter or query string.
+          schema:
+            type: object
+            properties:
+              errors:
+                type: string
+            example:
+              errors: "Wrong parameter 'driver_id' -> 'DfR'."
