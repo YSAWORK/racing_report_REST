@@ -9,7 +9,7 @@ The application reads the following log files:<br>
 + log_data/start.log: Contains timestamps for when each driver starts their race.<br>
 + log_data/end.log: Contains timestamps for when each driver finishes their race.<br>
 
-The bild_report.py file processes this data and calculates each driver's total time (end time - start time). It also handles errors, such as incorrect data formats or missing information.
+and convert them to SQLite database via script `database/covert_to_db.py` and calculates each driver's total time (end time - start time). It also handles errors, such as incorrect data formats or missing information.
 
 ## 2. API Endpoints:
 The API exposes the following endpoints:
@@ -27,7 +27,7 @@ Swagger is integrated to provide interactive API documentation. You can view and
 
 ## 5. Usage
 ##### Run the Flask application:
-```$ python racing_report/main_public.py```
+```$ python main_public.py```
 
 ##### Open a browser or API client (like Postman) and visit the endpoints:
 + ```.../api/{version}/report```

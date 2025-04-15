@@ -118,8 +118,8 @@ paths:
                 - "error": null
 
             'errors':
-              - "LHM_Lewis_Hamilton_MERCEDES": "LHM Lewis Hamilton_MERCEDES not included in results -- wrong data format in line 3 of resource file."
-              - "BRT": "Brendon Hartley (BRT) hasn`t enough data. Not included in results"
+              - "0": "LHM Lewis Hamilton_MERCEDES not included in results -- wrong data format in line 3 of resource file."
+              - "1": "Brendon Hartley (BRT) hasn`t enough data. Not included in results"
 
         400:
           description: Invalid parameter or query string.
@@ -166,19 +166,6 @@ paths:
                         type: string
                       team:
                         type: string
-                      start_time:
-                        type: string
-                        format: date-time
-                      end_time:
-                        type: string
-                        format: date-time
-                      position:
-                        type: integer
-                      time:
-                        type: string
-                      error:
-                        type: string
-                        nullable: true
 
               drivers_incor_data:
                 type: object
@@ -192,18 +179,6 @@ paths:
                         type: string
                       team:
                         type: string
-                      start_time:
-                        type: string
-                        format: date-time
-                      end_time:
-                        type: string
-                        format: date-time
-                      position:
-                        type: integer
-                      time:
-                        type: string
-                      error:
-                        type: string
 
               errors:
                 type: object
@@ -216,26 +191,16 @@ paths:
                   - name: "Kevin Magnussen"
                   - abbr: "KMH"
                   - team: "HAAS FERRARI"
-                  - start_time: "2018-05-24 12:02:51.003000"
-                  - end_time: "2018-05-24 12:04:04.396000"
-                  - position: 14
-                  - time: "0:01:13.393000"
-                  - error: null
 
               drivers_without_position:
                 'EOF':
                   - "name": "Esteban Ocon"
                   - "abbr": "EOF"
                   - "team": "FORCE INDIAMERCEDES"
-                  - "start_time": "2018-05-24 12:14:12.054000"
-                  - "end_time": "2018-05-24 12:11:24.067000"
-                  - "position": null
-                  - "time": "-1 day, 23:57:12.013000"
-                  - "error": "incorrect data"
 
               'errors':
-                - "LHM_Lewis_Hamilton_MERCEDES": "LHM Lewis Hamilton_MERCEDES not included in results -- wrong data format in line 3 of resource file."
-                - "BRT": "Brendon Hartley (BRT) hasn`t enough data. Not included in results"
+                - "0": "LHM Lewis Hamilton_MERCEDES not included in results -- wrong data format in line 3 of resource file."
+                - "1": "Brendon Hartley (BRT) hasn`t enough data. Not included in results"
 
 
   /api/v1/drivers/{driver_id}:
